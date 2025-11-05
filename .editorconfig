@@ -1,0 +1,202 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = false
+insert_final_newline = true
+
+# We indent using four spaces. This is to unify indentation and alignment, as well as follow
+# the C# four-space standard.
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# Makefiles are special - they *rely* on tabs.
+[{*.mk,GNUmakefile,makefile}]
+indent_style = tab
+
+[*.cs]
+dotnet_sort_system_directives_first = true
+csharp_preferred_modifier_order = public, private, protected, internal, file, new, static, abstract, virtual, sealed, readonly, override, extern, unsafe, volatile, async, required:suggestion
+
+# Use kernel-style braces. All language constructs that define anything in a block should have
+# a new-line, as if defining a "container":
+#
+#       void MyMethod()
+#       {
+#           Console.WriteLine("Hi!");
+#       }
+#
+# ...every other kind of block should have the braces on its own line, as they are logically *not*
+# definitions:
+#
+#       if (myCondition) {
+#           Something();
+#       }
+#
+csharp_new_line_before_open_brace = anonymous_methods, lambdas, local_functions, methods, types
+csharp_new_line_before_members_in_object_initializers = false
+
+# Always use file-scoped namespaces. The directory structure mirrors the namespace tree. 
+csharp_style_namespace_declarations = file_scoped:warning
+
+# UTF-8 literals often avoid GC allocations.
+csharp_style_prefer_utf8_string_literals = true:warning
+
+# Prefer:
+#   int x = 5;
+#   var x = new List<int>();
+# ...instead of:
+#   var x = 5;
+#   List<int> x = new List<int>();
+csharp_style_var_for_built_in_types = false:none
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:none
+
+# Prefer:
+#
+#   static void Hello()
+#   {
+#       Console.WriteLine("Hello");
+#   }
+#
+# ...instead of:
+#
+#   static void Hello()
+#       {
+#       Console.WriteLine("Hello");
+#       }
+#
+csharp_indent_braces = false
+
+# Braces are allowed when the following expression terminates the execution
+# of the function (e.g. by returning, or throwing an exception)
+csharp_prefer_braces = when_multiline:warning
+
+# Disable formatting violation reporting (computers can't judge how well code is formatted, unfortunately...)
+dotnet_diagnostic.IDE0055.severity = none
+
+# If a type isn't declared in a namespace, report an error.
+dotnet_diagnostic.CA1050.severity = error
+
+# If a method fits on a single line, prefer using an expression body for them.
+#      static void Hello() { Console.WriteLine("C# is lovely!"); }
+# ...should be changed to:
+#      static void Hello() => Console.WriteLine("C# is lovely!");
+csharp_style_expression_bodied_methods = when_on_single_line
+csharp_style_expression_bodied_operators = when_on_single_line
+
+dotnet_style_require_accessibility_modifiers = omit_if_default
+
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:none
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:none
+dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:none
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+dotnet_style_predefined_type_for_member_access = true:suggestion
+
+# Always qualify fields with "this". This is primarly to avoid any possibility of conflict with
+# local variables, as fields are camelCase'd. It also communicates the intent more clearly
+# (abc = 1 vs this.abc = 1). This is not needed for events, methods, and properties, as they are
+# PascalCase'd, and an access like "Example()" cannot be mistaken.
+dotnet_style_qualification_for_field = true:none
+dotnet_style_qualification_for_event = false:none
+dotnet_style_qualification_for_method = false:none
+dotnet_style_qualification_for_property = false:none
+
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_parentheses = false
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_after_comma = true
+csharp_space_before_comma = false
+csharp_space_after_dot = false
+csharp_space_before_dot = false
+csharp_space_after_semicolon_in_for_statement = true
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_around_declaration_statements = false
+csharp_space_before_open_square_brackets = false
+csharp_space_between_empty_square_brackets = false
+csharp_space_between_square_brackets = false
+
+dotnet_style_namespace_match_folder = false
+
+dotnet_analyzer_diagnostic.category-Style.severity = suggestion
+
+############################################
+# Naming-related
+############################################
+
+# For any and all naming convention violations, report a warning.
+dotnet_diagnostic.IDE1006.severity = warning
+
+# Generic naming styles
+dotnet_naming_style.s_camelcase.capitalization = camel_case
+dotnet_naming_style.s_pascalcase.capitalization = pascal_case
+
+## Non-private fields should be PascalCase.
+dotnet_naming_symbols.g_fields.applicable_kinds = field
+
+dotnet_naming_rule.r_fields.symbols = g_fields
+dotnet_naming_rule.r_fields.style   = s_pascalcase
+
+## Private fields should be camelCase.
+dotnet_naming_symbols.g_private_fields.applicable_kinds = field
+dotnet_naming_symbols.g_private_fields.applicable_accessibilities = private
+
+dotnet_naming_rule.r_private_fields.symbols = g_private_fields
+dotnet_naming_rule.r_private_fields.style   = s_camelcase
+
+## All constants should be PascalCase.
+dotnet_naming_symbols.g_consts.applicable_kinds = field
+dotnet_naming_symbols.g_consts.required_modifiers = const
+
+dotnet_naming_rule.r_consts.symbols = g_consts
+dotnet_naming_rule.r_consts.style   = s_pascalcase
+
+## Interfaces should be prefixed with an I, and be PascalCase.
+dotnet_naming_style.s_interfaces.capitalization = pascal_case
+dotnet_naming_style.s_interfaces.required_prefix = I
+
+dotnet_naming_symbols.g_interfaces.applicable_kinds = interface
+
+dotnet_naming_rule.r_interfaces.symbols = g_interfaces
+dotnet_naming_rule.r_interfaces.style   = s_interfaces
+
+## Type parameters should be prefixed with a T and be PascalCase.
+dotnet_naming_style.s_typeparams.capitalization = pascal_case
+dotnet_naming_style.s_typeparams.required_prefix = T
+
+dotnet_naming_symbols.g_typeparams.applicable_kinds = type_parameter
+
+dotnet_naming_rule.r_typeparams.symbols = g_typeparams
+dotnet_naming_rule.r_typeparams.style   = s_typeparams
+
+## Function parameters should be camelCase.
+dotnet_naming_symbols.g_params.applicable_kinds = parameter
+
+dotnet_naming_rule.r_params.symbols = g_params
+dotnet_naming_rule.r_params.style   = s_camelcase
+
+## Local variables should be camelCase.
+dotnet_naming_symbols.g_vars.applicable_kinds = local
+dotnet_naming_symbols.g_vars.applicable_accessibilities = local
+
+dotnet_naming_rule.r_vars.symbols = g_vars
+dotnet_naming_rule.r_vars.style = s_camelcase
+
+## All other kinds of entities should be PascalCase.
+## This rule includes namespaces, classes and enumerations, delegates, constructors,
+## properties, events, and methods.
+dotnet_naming_symbols.g_other.applicable_kinds = namespace, class, enum, struct, delegate, event, method, property
+
+dotnet_naming_rule.r_other.symbols = g_other
+dotnet_naming_rule.r_other.style = s_pascalcase
